@@ -3688,7 +3688,7 @@ event_base_foreach_event_nolock_(struct event_base *base,
 
 	/* Okay, now we deal with those events that have timeouts and are in
 	 * the min-heap. */
-	for (u = 0; u < base->timeheap.n; ++u) {
+	for (u = 0; u < base->timeheap.nSize; ++u) {
 		ev = base->timeheap.p[u];
 		if (ev->ev_flags & EVLIST_INSERTED) {
 			/* we already processed this one */
@@ -3835,7 +3835,7 @@ event_base_active_by_fd(struct event_base *base, evutil_socket_t fd, short event
 		size_t u;
 		struct event *ev;
 
-		for (u = 0; u < base->timeheap.n; ++u) {
+		for (u = 0; u < base->timeheap.nSize; ++u) {
 			ev = base->timeheap.p[u];
 			if (ev->ev_fd == fd) {
 				event_active_nolock_(ev, EV_TIMEOUT, 1);
@@ -3969,7 +3969,7 @@ event_base_assert_ok_nolock_(struct event_base *base)
 	evmap_check_integrity_(base);
 
 	/* Check the heap property */
-	for (u = 1; u < base->timeheap.n; ++u) {
+	for (u = 1; u < base->timeheap.nSize; ++u) {
 		size_t parent = (u - 1) / 2;
 		struct event *ev, *p_ev;
 		ev = base->timeheap.p[u];

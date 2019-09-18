@@ -44,7 +44,7 @@ static void
 check_heap(struct min_heap *heap)
 {
 	unsigned i;
-	for (i = 1; i < heap->n; ++i) {
+	for (i = 1; i < heap->nSize; ++i) {
 		unsigned parent_idx = (i-1)/2;
 		tt_want(evutil_timercmp(&heap->p[i]->ev_timeout,
 			&heap->p[parent_idx]->ev_timeout, >=));

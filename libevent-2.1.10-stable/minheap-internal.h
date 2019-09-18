@@ -39,7 +39,8 @@
 typedef struct min_heap
 {
 	struct event** p;
-	size_t n, a;
+	size_t nSize, aCapacity;
+	//size_t n, a;
 } min_heap_t;
 
 static inline void	     min_heap_ctor_(min_heap_t* s);
@@ -61,27 +62,27 @@ static inline void	     min_heap_shift_down_(min_heap_t* s, size_t hole_index, s
 #define min_heap_elem_greater(a, b) \
 	(evutil_timercmp(&(a)->ev_timeout, &(b)->ev_timeout, >))
 
-void min_heap_ctor_(min_heap_t* s) { s->p = 0; s->n = 0; s->a = 0; }
+void min_heap_ctor_(min_heap_t* s) { s->p = 0; s->nSize = 0; s->aCapacity = 0; }
 void min_heap_dtor_(min_heap_t* s) { if (s->p) mm_free(s->p); }
 void min_heap_elem_init_(struct event* e) { e->ev_timeout_pos.min_heap_idx = EV_SIZE_MAX; }
-int min_heap_empty_(min_heap_t* s) { return 0 == s->n; }
-size_t min_heap_size_(min_heap_t* s) { return s->n; }
-struct event* min_heap_top_(min_heap_t* s) { return s->n ? *s->p : 0; }
+int min_heap_empty_(min_heap_t* s) { return 0 == s->nSize; }
+size_t min_heap_size_(min_heap_t* s) { return s->nSize; }
+struct event* min_heap_top_(min_heap_t* s) { return s->nSize ? *s->p : 0; }
 
 int min_heap_push_(min_heap_t* s, struct event* e)
 {
-	if (min_heap_reserve_(s, s->n + 1))
+	if (min_heap_reserve_(s, s->nSize + 1))
 		return -1;
-	min_heap_shift_up_(s, s->n++, e);
+	min_heap_shift_up_(s, s->nSize++, e);
 	return 0;
 }
 
 struct event* min_heap_pop_(min_heap_t* s)
 {
-	if (s->n)
+	if (s->nSize)
 	{
 		struct event* e = *s->p;
-		min_heap_shift_down_(s, 0, s->p[--s->n]);
+		min_heap_shift_down_(s, 0, s->p[--s->nSize]);
 		e->ev_timeout_pos.min_heap_idx = EV_SIZE_MAX;
 		return e;
 	}
@@ -97,7 +98,7 @@ int min_heap_erase_(min_heap_t* s, struct event* e)
 {
 	if (EV_SIZE_MAX != e->ev_timeout_pos.min_heap_idx)
 	{
-		struct event *last = s->p[--s->n];
+		struct event *last = s->p[--s->nSize];
 		size_t parent = (e->ev_timeout_pos.min_heap_idx - 1) / 2;
 		/* we replace e with the last element in the heap.  We might need to
 		   shift it upward if it is less than its parent, or downward if it is
@@ -132,16 +133,16 @@ int min_heap_adjust_(min_heap_t *s, struct event *e)
 
 int min_heap_reserve_(min_heap_t* s, size_t n)
 {
-	if (s->a < n)
+	if (s->aCapacity < n)
 	{
 		struct event** p;
-		size_t a = s->a ? s->a * 2 : 8;
+		size_t a = s->aCapacity ? s->aCapacity * 2 : 8;
 		if (a < n)
 			a = n;
 		if (!(p = (struct event**)mm_realloc(s->p, a * sizeof *p)))
 			return -1;
 		s->p = p;
-		s->a = a;
+		s->aCapacity = a;
 	}
 	return 0;
 }
@@ -173,9 +174,9 @@ void min_heap_shift_up_(min_heap_t* s, size_t hole_index, struct event* e)
 void min_heap_shift_down_(min_heap_t* s, size_t hole_index, struct event* e)
 {
     size_t min_child = 2 * (hole_index + 1);
-    while (min_child <= s->n)
+    while (min_child <= s->nSize)
 	{
-	min_child -= min_child == s->n || min_heap_elem_greater(s->p[min_child], s->p[min_child - 1]);
+	min_child -= min_child == s->nSize || min_heap_elem_greater(s->p[min_child], s->p[min_child - 1]);
 	if (!(min_heap_elem_greater(e, s->p[min_child])))
 	    break;
 	(s->p[hole_index] = s->p[min_child])->ev_timeout_pos.min_heap_idx = hole_index;
