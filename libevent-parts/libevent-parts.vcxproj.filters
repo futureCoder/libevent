@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Inc">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Inc\event2">
+      <UniqueIdentifier>{19dbf66e-ef28-4c2f-983d-e067bb5641d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Timer\minheap-internal.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\mm-internal.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\util-internal.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\event2\event.h">
+      <Filter>Inc\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\event2\event_struct.h">
+      <Filter>Inc\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\event2\util.h">
+      <Filter>Inc\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\event2\event-config.h">
+      <Filter>Inc\event2</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer\evconfig-private.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
